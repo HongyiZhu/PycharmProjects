@@ -71,6 +71,7 @@ while True:
             log.write(str(err) + "\n")
             log.flush()
 
+        print("Query " + cityName + " succeeded")
         sql = get_sql(jsonFile)
 
         try:
@@ -81,7 +82,7 @@ while True:
         i += 1
         print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
         if i % 100 == 0:
-            time.sleep(20)
+            time.sleep(30)
     cur.close()
     f.close()
     log.close()
