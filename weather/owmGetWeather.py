@@ -83,7 +83,7 @@ while True:
         i += 1
         print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
         if i % 500 == 0:
-            time.sleep(600)
+            time.sleep(660)
     cur.close()
     f.close()
     log.close()
