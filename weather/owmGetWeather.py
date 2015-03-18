@@ -74,7 +74,8 @@ while True:
             print("Query " + cityName + " succeeded")
             sql = get_sql(jsonFile)
         except Exception as err:
-            log.write(str(err) + "\n")
+            log.write(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" +
+                      cityID + "_" + cityName + ": " + str(err) + "\n")
             log.flush()
             continue
 
