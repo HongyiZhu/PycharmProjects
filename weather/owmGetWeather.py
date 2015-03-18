@@ -60,10 +60,11 @@ while True:
     f = open("cityList.tsv", "r")
     i = 0
     cur = db_connect()
-    log_name = "weather_log_" + str(time.strftime("%m%d%H%M%S", time.localtime()) + ".txt")
+    log_name = "weather_log_" + str(time.strftime("%m%d%H00", time.localtime()) + ".txt")
     log = open(log_name, "w")
     for city in f.readlines():
         cityID = city.split("\t")[0]
+        cityName = city.split("\t")[1]
         jsonFile = json.loads(urlopen(url+cityID).read().decode('utf-8'))
         sql = get_sql(jsonFile)
         try:
@@ -71,6 +72,7 @@ while True:
         except Exception as err:
             log.write(str(err) + "\n")
         i += 1
+        print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
         if i == 1500:
             time.sleep(120)
     cur.close()
