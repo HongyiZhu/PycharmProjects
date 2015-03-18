@@ -65,17 +65,26 @@ while True:
     for city in f.readlines():
         cityID = city.split("\t")[0]
         cityName = city.split("\t")[1]
-        jsonFile = json.loads(urlopen(url+cityID).read().decode('utf-8'))
+        try:
+            jsonFile = json.loads(urlopen(url+cityID).read().decode('utf-8'))
+        except Exception as err:
+            log.write(str(err) + "\n")
+            log.flush()
+
         sql = get_sql(jsonFile)
+
         try:
             cur.execute(sql)
         except Exception as err:
             log.write(str(err) + "\n")
+            log.flush()
         i += 1
         print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
-        if i == 1500:
-            time.sleep(120)
+        if i % 100 == 0:
+            time.sleep(20)
     cur.close()
     f.close()
     log.close()
+    print()
+    print("Update Finished for " + log_name)
     time.sleep(7200)
