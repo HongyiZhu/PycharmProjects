@@ -4,7 +4,7 @@ from urllib.request import urlopen
 import json
 import pymysql
 import time
-
+from socket import timeout
 
 def str_replace(s):
     return str(s).replace("\\", "\\\\").replace("'", "\\'")
@@ -66,7 +66,8 @@ while True:
         cityID = city.split("\t")[0]
         cityName = city.split("\t")[1]
         try:
-            jsonFile = json.loads(urlopen(url+cityID).read().decode('utf-8'))
+            response = urlopen(url+cityID).read().decode('utf-8')
+            jsonFile = json.loads(response)
         except Exception as err:
             log.write(str(err) + "\n")
             log.flush()
@@ -81,11 +82,11 @@ while True:
             log.flush()
         i += 1
         print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
-        if i % 100 == 0:
-            time.sleep(30)
+        if i % 500 == 0:
+            time.sleep(600)
     cur.close()
     f.close()
     log.close()
     print()
     print("Update Finished for " + log_name)
-    time.sleep(7200)
+    time.sleep(3600)
