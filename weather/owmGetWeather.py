@@ -65,25 +65,27 @@ while True:
     for city in f.readlines():
         cityID = city.split("\t")[0]
         cityName = city.split("\t")[1]
+        i += 1
+        if i % 500 == 0:
+            time.sleep(660)
         try:
             response = urlopen(url+cityID).read().decode('utf-8')
             jsonFile = json.loads(response)
+            print("Query " + cityName + " succeeded")
+            sql = get_sql(jsonFile)
         except Exception as err:
             log.write(str(err) + "\n")
             log.flush()
-
-        print("Query " + cityName + " succeeded")
-        sql = get_sql(jsonFile)
+            continue
 
         try:
             cur.execute(sql)
         except Exception as err:
             log.write(str(err) + "\n")
             log.flush()
-        i += 1
+            continue
+
         print(str(time.strftime("%d/%m %H:%M:%S", time.localtime())) + "\t" + cityName + " updated")
-        if i % 500 == 0:
-            time.sleep(660)
     cur.close()
     f.close()
     log.close()
