@@ -60,7 +60,7 @@ while True:
     f = open("cityList.tsv", "r")
     i = 0
     cur = db_connect()
-    log_name = "weather_log_" + str(time.strftime("%m%d%H00", time.localtime()) + ".txt")
+    log_name = "log/weather_log_" + str(time.strftime("%m%d%H00", time.localtime()) + ".txt")
     log = open(log_name, "w")
     for city in f.readlines():
         cityID = city.split("\t")[0]
