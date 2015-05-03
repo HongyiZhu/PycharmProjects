@@ -42,10 +42,10 @@ def get_sql(js):
 
 urlbase = "http://www.airnowapi.org/aq/data/?"
 startDate = "2015-03-"
-startDay = 19
-startHour = 22
+startDay = 20
+startHour = 0
 endDate = "2015-03-"
-endDay = 19
+endDay = 31
 endHour = 23
 parameters = "O3,PM25,PM10,CO,NO2,SO2"
 BBOX = "-129.658687,23.736257,-60.049312,50.184764"
