@@ -45,6 +45,7 @@ for country in country_list:
 
                 # parse the query result
                 key_result = USPTO_tool.analyze_url(url)
+                print("incoming patents: %s" % str(len(key_result)))
 
                 # remove duplicate entry
                 for result in key_result:
@@ -52,6 +53,7 @@ for country in country_list:
                         pass
                     else:
                         pat_list.append(result)
+                print("unique patents: %s" % str(len(pat_list)))
         else:
             # Query with old keywords
             for key in old_query:
@@ -64,6 +66,7 @@ for country in country_list:
 
                 # Parse query result
                 key_result = USPTO_tool.analyze_url(url)
+                print("incoming patents: %s" % str(len(key_result)))
 
                 # remove duplicate entry
                 for result in key_result:
@@ -71,8 +74,9 @@ for country in country_list:
                         pass
                     else:
                         pat_list.append(result)
+                print("unique patents: %s" % str(len(pat_list)))
 
-        # patent number for each year
+        # log module
         log = open("%s-%s.log" % (country, str(year)), "w")
         for pat in pat_list:
             log.write(pat)
