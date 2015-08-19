@@ -1,0 +1,60 @@
+selfassembl$
+"self assembly"
+"self assembled"
+"self assembling"
+self-assembly
+self-assembled
+self-assembling
+"atomic force microscope"
+"atomic force microscopic"
+"atomic force microscopy"
+atomic-force-microscope
+atomic-force-microscopy
+"scanning tunneling microscope"
+"scanning tunneling microscopic"
+"scanning tunneling microscopy"
+"scanning-tunneling-microscope"
+scanning-tunneling-microscopy
+"atomistic simulation"
+biomotor
+"molecular device"
+"molecular electronics"
+"molecular modeling"
+"molecular motor"
+"molecular sensor"
+"molecular simulation"
+"quantum computing"
+"quantum dot$"
+"quantum effect$"
+plasmonic
+meta-material
+metamaterial
+spintronic
+"molecular system"
+supramolecul
+fullerene
+dendrimers
+graphen
+"two-dimensional material"
+"atom thick layer"
+"2D AND material"
+"atom layer deposition"
+"artificial photosynthes"
+"cellulose fiber"
+"cellulose tube"
+optoelectronic
+opto-electronic
+bio-photonics
+biophotonic
+opto-genetic
+optogenetic
+"DNA computing"
+"DNA assembling"
+proteomic
+"synthetic biology"
+"mesoscale structure"
+"mesoscale phenomena"
+"mesoscale science"
+"mesoscale engineering"
+"mesoscale model"
+nano$
