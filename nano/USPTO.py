@@ -37,6 +37,7 @@ for country in country_list:
             # Query with new keywords
             for key in new_query:
                 # generate query link
+                print("Querying %s %s %s" % (country, str(year), key))
                 query = "isd/%s+AND+acn/%s+AND+(ttl/%s+OR+abst/%s+OR+aclm/%s)" % (str(year), country, key, key, key)
                 query = query.replace("/", "%2F").replace("(", "%28").replace(")", "%29")\
                     .replace(" ", "+").replace("\"", "%22").replace("$", "%24")
@@ -55,6 +56,7 @@ for country in country_list:
             # Query with old keywords
             for key in old_query:
                 # generate query link
+                print("Querying %s %s %s" % (country, str(year), key))
                 query = "isd/%s+AND+acn/%s+AND+(ttl/%s+OR+abst/%s+OR+aclm/%s)" % (str(year), country, key, key, key)
                 query = query.replace("/", "%2F").replace("(", "%28").replace(")", "%29")\
                     .replace(" ", "+").replace("\"", "%22").replace("$", "%24")
@@ -71,4 +73,11 @@ for country in country_list:
                         pat_list.append(result)
 
         # patent number for each year
-        pat_num = len(pat_list)
+        log = open("%s-%s.log" % (country, str(year)), "w")
+        for pat in pat_list:
+            log.write(pat)
+            log.write("\n")
+        log.close()
+        log = open("general.log", "a")
+        log.write("%s\t%s\t%s\n" % (country, str(year), len(pat_list)))
+        log.close()

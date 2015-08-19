@@ -1,6 +1,7 @@
 __author__ = 'Hongyi'
 
 import re
+import time
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
@@ -55,6 +56,7 @@ def analyze_url(url):
     m = re.search(": (\\d+) patents", soup.text)
     if m is not None:
         totalnumber = int(m.group(1))
+    print("%s patents in total" % str(totalnumber))
 
     # no result => return a null list
     if totalnumber == 0:
@@ -64,6 +66,7 @@ def analyze_url(url):
         pagenum = 1
 
         # analyze the table elements
+        print("Analyzing page %s" % str(pagenum))
         analyze(soup, patent_list)
 
         # flip to new pages if needed
@@ -73,8 +76,10 @@ def analyze_url(url):
             newurl = next_page(soup)
 
             # analyze pages one by one
+            time.sleep(1)
             page = urlopen(newurl)
             soup = BeautifulSoup(page)
+            print("Analyzing page %s" % str(pagenum))
             analyze(soup, patent_list)
 
     # return after traverse
