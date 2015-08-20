@@ -2,7 +2,10 @@ __author__ = 'Hongyi'
 
 import re
 import time
+import socket
+import socks
 from urllib.request import urlopen
+from urllib.request import Request
 from bs4 import BeautifulSoup
 
 
@@ -47,6 +50,9 @@ def analyze_url(url):
     :param url: the query link
     :return: pat_list: a list of patents containing keyword
     """
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9150, True)
+    socket.socket = socks.socksocket
+
     page = urlopen(url)
     soup = BeautifulSoup(page)
     totalnumber = 0
@@ -84,3 +90,23 @@ def analyze_url(url):
 
     # return after traverse
     return patent_list
+
+def get_amount(url):
+    """
+    Analyze the query page and gather patent information
+    :param url: the query link
+    :return: number of total patents
+    """
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9150, True)
+    socket.socket = socks.socksocket
+
+    page = urlopen(url)
+    soup = BeautifulSoup(page)
+    totalnumber = 0
+
+    # get general number of patents
+    m = re.search(": (\\d+) patents", soup.text)
+    if m is not None:
+        totalnumber = int(m.group(1))
+    
+    return(totalnumber)
