@@ -14,10 +14,10 @@ new_f = open('new_uspto_query.txt', "r")
 old_f = open('old_uspto_query.txt', 'r')
 new_query = []
 for line in new_f:
-    new_query.append(line.strip().replace(" ", "+") + "%0D%0A")
+    new_query.append(line.strip().replace(" ", "+"))
 old_query = []
 for line in old_f:
-    old_query.append(line.strip().replace(" ", "+") + "%0D%0A")
+    old_query.append(line.strip().replace(" ", "+"))
 new_f.close()
 old_f.close()
 
