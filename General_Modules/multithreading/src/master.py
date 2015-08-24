@@ -1,7 +1,6 @@
 __author__ = 'zhuhy'
 
 import subprocess
-import time
 import os
 import time
 
