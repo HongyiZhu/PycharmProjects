@@ -6,7 +6,6 @@ import socks
 import telnetlib
 import pymysql
 import json
-import sqlite3
 import sys
 
 db_10 = pymysql.connect(host="10.128.50.165",  # your host, usually localhost
@@ -38,23 +37,23 @@ def connectTor():
     g.write('Testing data using IP: ' + data["query"] + "\n")
 
     cursor_10 = db_10.cursor()
-    cursor_10_insert = db_10.cursor()
+    # cursor_10_insert = db_10.cursor()
     cursor_128 = db_128.cursor()
 
     try:
-        sql = "select id, ip_str from shodan_classified_scada where port = 23 and conf >= .8 LIMIT %s, %s;" \
-              % (sys.argv[1], str(int(sys.argv[2])-int(sys.argv[1])+1))
+        sql = "select id, ip_str from telnet_device limit %s, %s;" \
+              % (sys.argv[1], str(int(sys.argv[2]) - int(sys.argv[1]) + 1))
 
         cursor_10.execute(sql)
         
-        conn = sqlite3.connect(':memory:')
-
-        cur_conn = conn.cursor()
-        cur_conn.execute("CREATE table data (id text, ip_str text)")
-        conn.commit()
-
-        for row in cursor_10:
-            cur_conn.execute("insert into data(id, ip_str) values ('%s', '%s');" % (row[0], row[1]))
+        # conn = sqlite3.connect(':memory:')
+        #
+        # cur_conn = conn.cursor()
+        # cur_conn.execute("CREATE table data (id text, ip_str text)")
+        # conn.commit()
+        #
+        # for row in cursor_10:
+        #     cur_conn.execute("insert into data(id, ip_str) values ('%s', '%s');" % (row[0], row[1]))
 
         sql2 = "SELECT * FROM passworddb.scadapasswords"
         # Execute the SQL command
@@ -65,9 +64,9 @@ def connectTor():
         # % (keyword, keyword, keyword, keyword, keyword)
         try:
             # Execute the SQL command
-            cur_conn.execute("select min(id), ip_str from data group by ip_str")
+            # cur_conn.execute("select min(id), ip_str from data group by ip_str")
 
-            for row in cur_conn:
+            for row in cursor_10:
                 ip_id = row[0]
                 ip = row[1]
                 # Now print fetched result
