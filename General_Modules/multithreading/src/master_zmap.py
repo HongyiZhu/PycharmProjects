@@ -5,6 +5,7 @@ import os
 import time
 from subprocess import PIPE
 
+
 def new_mod(a):
     if a < 13:
         return a
