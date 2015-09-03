@@ -1,10 +1,9 @@
 __author__ = 'zhuhy'
 
 import subprocess
-from subprocess import PIPE
 import os
 import time
-
+from subprocess import PIPE
 
 def new_mod(a):
     if a < 13:
@@ -18,11 +17,11 @@ python_path = "python3"
 slave_path = "/home/sagars/"
 os.chdir(slave_path)
 
-script_name = "Telnet_slave.py"
+script_name = "slave_zmap.py"
 
 # Modify iterange according to the need
-overall_scale = 242465
-slice_size = 700
+overall_scale = 9999
+slice_size = 2000
 
 # A list to record slice argument information
 args_list = []

