@@ -50,6 +50,7 @@ def analyze_url(url):
     :param url: the query link
     :return: pat_list: a list of patents containing keyword
     """
+    # routing through tor network
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9150, True)
     socket.socket = socks.socksocket
 
