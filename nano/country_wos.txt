@@ -1,10 +1,4 @@
-Argentina
-Brazil
-Mexico
-Chile
-Cuba
-Venezuela
-Colombia
-Peru
-Uruguay
-Costa Rica
+USA
+Japan
+EU27
+China
