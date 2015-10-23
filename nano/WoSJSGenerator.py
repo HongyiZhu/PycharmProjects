@@ -10,10 +10,16 @@ old_f.close()
 
 # Country List
 country_f = open('country_wos.txt', 'r')
-country_list = []
+country_line_list = []
 for line in country_f:
-    country_list.append(line.strip())
+    country_line_list.append(line.strip())
 country_f.close()
+# Parse CU= style
+country_list_list = [x.split(";") for x in country_line_list]
+country_string_list = []
+for country in country_list_list:
+    string = " or CU=".join(country)
+    country_string_list.append("CU=" + string)
 
 # Journal List
 top_f = open("top_3_wos.txt", 'r')
@@ -25,7 +31,7 @@ ending = 2014
 
 # Generate JS for all journals
 f = open("wos_all_journal.txt", "w")
-for country in country_list:
+for country in country_string_list:
     for year in range(starting, ending+1):
         if year > 2010:
             jstr = "doc = document;textf = doc.getElementById(\"value(input1)\");" \
@@ -40,7 +46,7 @@ f.close()
 
 # Generate JS for Top 3 Journals
 f = open("wos_top_3_journal.txt", "w")
-for country in country_list:
+for country in country_string_list:
     for year in range(starting, ending+1):
         if year > 2010:
             jstr = "doc = document;textf = doc.getElementById(\"value(input1)\");" \
