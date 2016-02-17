@@ -31,11 +31,11 @@ def calc(test):
                 prior_num.append(pnumber)
         if flag:
             nonOverLap += 1
-    print 'Size:\t\t\t\t' + str(len(test))
-    print 'Non-Overlap:\t\t' + str(nonOverLap)
-    print 'firstInventorUS:\t' + str(firstUSCount)
-    print 'existInventorUS:\t' + str(inventorUSCount)
-    print 'companyUS:\t\t\t' + str(companyUSCount)
+    print('Size:\t\t\t\t' + str(len(test)))
+    print('Non-Overlap:\t\t' + str(nonOverLap))
+    print('firstInventorUS:\t' + str(firstUSCount))
+    print('existInventorUS:\t' + str(inventorUSCount))
+    print('companyUS:\t\t\t' + str(companyUSCount))
     # print len(prior_num)-len(set(prior_num))
     print
 
