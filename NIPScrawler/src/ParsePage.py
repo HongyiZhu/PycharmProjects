@@ -35,7 +35,7 @@ def get_id(url):
     return paper_id
 
 
-class ViewPage:
+class ParsePage:
     def __init__(self, url, folder):
         self.url = url
         self.folder = folder
