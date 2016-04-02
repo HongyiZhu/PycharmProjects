@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from urllib.request import urlretrieve
+from NIPScrawler.src.Database_IO import DatabaseConnection
 import re
 import time
 import random
@@ -43,6 +44,7 @@ class ParsePage:
         self.browser.get(self.url)
         self.source = self.browser.page_source
         self.id = get_id(url)
+        self.db = DatabaseConnection()
 
     def parse_page(self):
         page = BeautifulSoup(self.source, 'lxml')
@@ -51,6 +53,12 @@ class ParsePage:
         abstract = get_abstract(page)
         event_type = self.get_event_type()
         local_filepath = self.download_file(page)
+        self.db.insert(title=title,
+                       authors=authors,
+                       abstract=abstract,
+                       event_type=event_type,
+                       local_filepath=local_filepath)
+        self.db.close()
 
     def get_event_type(self):
         reg = re.compile(r'Conference Event Type: (.*)</h3>')

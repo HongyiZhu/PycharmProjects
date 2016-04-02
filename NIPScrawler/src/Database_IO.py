@@ -16,5 +16,9 @@ class DatabaseConnection:
     def __init__(self):
         self.cursor = db_connect_new()
 
-    def insert(self, query):
+    def insert(self, title, authors, abstract, event_type, local_filepath):
+        query = ""
         self.cursor.execute(query)
+
+    def close(self):
+        self.cursor.close()
