@@ -13,7 +13,8 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 def _read_corpus():
     f = open('corpus.it', 'r')
     # all the tokens in the corpus
-    tokens = set()
+    lower_tokens = set()
+    # tokens = set()
     # all the labels in the corpus
     labels = set()
     # the dict containing training sentences and tags
@@ -22,17 +23,20 @@ def _read_corpus():
     for lines in f:
         if not lines.strip() == "":
             [t, l] = lines.strip().split("\t")
-            tokens.add(t)
+            lower_tokens.add(t.lower())
+            # tokens.add(t)
             labels.add(l)
-            st.append((t,l))
+            st.append((t.lower(),l))
         else:
             sentences.append(st)
             st = []
     f.close()
-    tokens = sorted(list(tokens))
+    print(len(lower_tokens))
+    # print(len(tokens))
+    lower_tokens = sorted(list(lower_tokens))
     labels = sorted(labels)
 
-    return list(tokens), list(labels), sentences
+    return list(lower_tokens), list(labels), sentences
 
 def _generate_data():
     tokens, labels, sentences = _read_corpus()
@@ -47,7 +51,7 @@ def _generate_data():
     for sentence in sentences:
         length_pack.append(len(sentence))
         for (word, tag) in sentence:
-            sentence_pack.append([int(token_to_index[word])])
+            sentence_pack.append([int(token_to_index[word.lower()])])
             tag_pack.append(int(label_to_index[tag]))
 
     return token_to_index, reverse_token_index, label_to_index, reverse_label_to_index, sentence_pack, length_pack, tag_pack
@@ -70,6 +74,15 @@ def _assign(confusion_matrix):
     cost_matrix = np.max(confusion_matrix) - confusion_matrix
     return linear_sum_assignment(cost_matrix)[1]
 
+def _assign2(confusion):
+    a = 0
+    for i in range(11):
+        r, c = np.unravel_index(np.argmax(confusion),confusion.shape)
+        a += confusion[r,c]
+        confusion[r,:] = -1
+        confusion[:,c] = -1
+    return a
+
 
 def main(load=True,verbose=False):
     # load corpus
@@ -85,10 +98,10 @@ def main(load=True,verbose=False):
             hmm = pickle.load(model)
             model.close()
         except:
-            hmm = h2.GaussianHMM(n_components=len(label_to_index), tol=1e-6, verbose=True, n_iter=1000000)\
+            hmm = h2.MultinomialHMM(n_components=len(label_to_index), tol=1e-6, verbose=True, n_iter=1000000)\
                 .fit(sentence_pack, lengths=length_pack)
     else:
-        hmm = h2.GaussianHMM(n_components=len(label_to_index), tol=1e-6, verbose=True, n_iter=1000000) \
+        hmm = h2.MultinomialHMM(n_components=len(label_to_index), tol=1e-6, verbose=True, n_iter=1000000) \
             .fit(sentence_pack, lengths=length_pack)
 
     # initial decoding
@@ -115,12 +128,14 @@ def main(load=True,verbose=False):
     for i in range(len(tag)):
         if transformed_predict[i] == tag_pack[i]:
             same += 1
-    print("Accuracy:\t" + str(same / len(tag)))
+    print("Accuracy1:\t" + str(same / len(tag)))
+    print("Accuracy2:\t" + str(_assign2(conf_matrix)/len(tag)))
 
     # clean up and save model
-    model = open("hmm_pretrain.pkl", 'wb') if load else open("hmm_newlytrained.pkl", 'wb')
-    pickle.dump(hmm, model)
-    model.close()
+    if not load:
+        model = open("hmm_newlytrained.pkl", 'wb')
+        pickle.dump(hmm, model)
+        model.close()
 
 parser = argparse.ArgumentParser(description='HMM Tagger.')
 parser.add_argument('-t', '--train', action='store_false',

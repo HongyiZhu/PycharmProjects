@@ -19,5 +19,7 @@ optional arguments:
 
 Explanation:
 I used the package "hmmlearn" to train the model and predict the hidden states (numeric states) of the corpus.
-To calculate the accuracy of the tagging predictions, I stored the result into a confusion matrix "labels vs. hidden-states (numeric)". I used the Hungarian Algorithm in 'scipy.optimize' package to assign hidden states to labels. This algorithm can find out the maximum/minimum sum of an 'assignment problem'. With this assignment, I calculate the corresponding sum in the confusion matrix.
-In verbose mode, I used the calculated assignment to map the hidden states to the existing labels and output the decoded POS tags.
+To calculate the accuracy of the tagging predictions, I stored the result into a confusion matrix "labels vs. hidden-states (numeric)". I used two methods to calculate the accuracy.
+    Method 1: I used the Hungarian Algorithm in 'scipy.optimize' package to assign hidden states to labels. This algorithm can find out the maximum/minimum sum of an 'assignment problem'. With this assignment, I calculate the corresponding sum in the confusion matrix.
+    Method 2: I used a greedy method to calculate the accuracy. I select the maximum value in the confusion matrix and assign the state to the corresponding label. Then I removed the column and row in the matrix. In the end we can obtain a sum.
+In verbose mode, I used the calculated assignment (Method 1) to map the hidden states to the existing labels and output the decoded POS tags.
