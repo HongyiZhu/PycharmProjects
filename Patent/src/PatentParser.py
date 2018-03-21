@@ -20,7 +20,7 @@ def calc(test):
             inventorUSCount += 1
             if inventor.find('[') == inventor.find('[US]'):
                 firstUSCount += 1
-        pnlist = string.split(pn, ';')
+        pnlist = pn.split(';')
         for i in range(len(pnlist)):
             pnlist[i] = pnlist[i].strip()
         flag = True
@@ -39,24 +39,25 @@ def calc(test):
     # print len(prior_num)-len(set(prior_num))
     print
 
-folder = 'C:/PR/'
+folder = 'C:/PR2016/'
 filenameList = os.listdir(folder)
 sampleCount = 0
 header = []
 sample = []
 for filename in filenameList:
-    with open(folder+filename, 'rb') as f:
+    with open(folder+filename, 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
-        header = reader.next()
+        # header = reader.next()
+        next(reader)
         for row in reader:
             # print row[9].strip()
             sample += [row]
             sampleCount += 1
 # random.shuffle(sample)
 # print sampleCount
-set1 = sample[:sampleCount / 3]
-set2 = sample[sampleCount / 3: sampleCount / 3 * 2]
-set3 = sample[sampleCount / 3 * 2:]
+set1 = sample[:int(sampleCount / 3)]
+set2 = sample[int(sampleCount / 3): int(sampleCount / 3 * 2)]
+set3 = sample[int(sampleCount / 3 * 2):]
 calc(sample)
 calc(set1)
 calc(set2)

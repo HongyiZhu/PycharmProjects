@@ -8,7 +8,7 @@ import random
 import time
 
 
-search_date = datetime.date(2016, 1, 1)
+search_date = datetime.date(2015, 1, 1)
 delta = datetime.timedelta(1)
 random.seed()
 sum = 0
@@ -18,11 +18,11 @@ url_base = "https://worldwide.espacenet.com/searchResults?submitted=true&locale=
 cookie = "LevelXLastSelectedDataSource=EPODOC; JSESSIONID=v1p20iZiazrqRkvqkUVTKrkI.espacenet_levelx_prod_1; menuCurrentSearch=%2F%2Fworldwide.espacenet.com%2FsearchResults%3FAB%3D%26AP%3D%26CPC%3D%26DB%3DEPODOC%26IC%3D%26IN%3D%26PA%3D%26PD%3D20160101%26PN%3D%26PR%3D%26ST%3Dadvanced%26Submit%3DSearch%26TI%3D%26locale%3Den_EP; org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE=en_EP; PGS=10; currentUrl=https%3A%2F%2Fworldwide.espacenet.com%2FsearchResults%3Fsubmitted%3Dtrue%26locale%3Den_EP%26DB%3DEPODOC%26ST%3Dadvanced%26TI%3D%26AB%3D%26PN%3D%26AP%3D%26PR%3D%26PA%3D%26IN%3D%26CPC%3D%26IC%3D%26Submit%3DSearch%26PD%3D"
 
 dates = []
-while search_date.year < 2017:
+while search_date.year < 2016:
     dates.append(search_date.isoformat().replace("-", ""))
     search_date += delta
 random.shuffle(dates)
-f = open('dates.txt')
+f = open('dates2015.txt')
 for line in f:
     dates.remove(line.strip())
 print(len(dates))
