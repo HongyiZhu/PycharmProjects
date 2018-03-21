@@ -1,6 +1,6 @@
 __author__ = 'Hongyi'
 
-import USPTO_tool
+from . import USPTO_tool
 
 # Country List
 country_f = open('country_uspto.txt', 'r')
