@@ -37,7 +37,8 @@ def get_id(url):
 
 
 class ParsePage:
-    def __init__(self, url, folder):
+    def __init__(self, url, folder, year):
+        self.year = year
         self.url = url
         self.folder = folder
         self.browser = webdriver.PhantomJS()
@@ -57,6 +58,7 @@ class ParsePage:
                        authors=authors,
                        abstract=abstract,
                        event_type=event_type,
+                       year=self.year,
                        local_filepath=local_filepath)
         self.db.close()
 
@@ -71,4 +73,4 @@ class ParsePage:
         time.sleep(random.randrange(10))
         urlretrieve(urljoin(root, pdf_href), filename)
         self.browser.close()
-        return filename
+        return filename.replace('\\', '/')
