@@ -21,8 +21,8 @@ os.chdir(slave_path)
 script_name = "slave_zmap.py"
 
 # Modify iterange according to the need
-overall_scale = 9999
-slice_size = 2000
+overall_scale = 1000
+slice_size = 2
 
 # A list to record slice argument information
 args_list = []
