@@ -1,0 +1,4 @@
+.idea/*
+__pycache__/*
+data/mnist.pkl
+datadump_3.txt
