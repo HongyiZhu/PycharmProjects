@@ -1,13 +1,7 @@
-# import xlrd
 import pickle
 
-# CAS_replace = r"C:\Users\zhuhy\Desktop\Nano Network\CAS\Chinese Academy of Sciences.xlsx"
 CHINA_cities = r"C:\Users\zhuhy\Desktop\Nano Network\china_cities.txt"
 US_cities = r'C:\Users\zhuhy\Desktop\Nano Network\us_cities.txt'
-
-# cas_wb = xlrd.open_workbook(CAS_replace)
-# cas_ws = cas_wb.sheet_by_index(0)
-# cas_aliases = cas_ws.col_values(1, 0)
 
 f = open(CHINA_cities, 'r', encoding='utf8')
 CN_cities = f.readlines()
@@ -79,6 +73,9 @@ for line in f:
     entity_dict[a] = b
 f.close()
 
+cn_unknown = []
+us_unknown = []
+
 for col in col_SIPO:
     for a in col:
         sa = a.strip()
@@ -106,6 +103,14 @@ for col in col_SIPO:
                             flag = True
                             entity_dict[sa] = cty_dict[cty]
                             break
+                if not flag:
+                    cn_unknown.append(sa)
+
+f = open("cn_unknown_2017.csv", "w")
+for w in set(cn_unknown):
+    f.write(w)
+    f.write("\n")
+f.close()
 
 for col in col_USPTO:
     for a in col:
@@ -134,19 +139,13 @@ for col in col_USPTO:
                             flag = True
                             entity_dict[sa] = cty_dict[cty]
                             break
-
-entity_domain_dict = {}
-
-for d in entity_dict.keys():
-    flag = False
-    for a in ["UNIV", "INST", "ACADEM", "ECOL", "NATIONAL", "COLLEGE"]:
-        if a in d:
-            entity_domain_dict[d] = 'ACA'
-            flag = True
-    if not flag:
-        entity_domain_dict[d] = 'IND'
-
-print(len(entity_dict), len(entity_domain_dict))
-f = open("entity_dict.pkl", "wb")
-pickle.dump((entity_dict, entity_domain_dict), f)
+                if not flag:
+                    us_unknown.append(sa)
+f = open("us_unknown_2017.csv", "w")
+for w in set(us_unknown):
+    f.write(w)
+    f.write("\n")
 f.close()
+
+# print(len(cn_unknown))
+# print(len(us_unknown))

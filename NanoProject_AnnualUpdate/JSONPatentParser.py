@@ -23,7 +23,7 @@ def process_inventors(patentID, inventors, cur):
         except KeyError:
             country = "-"
         rank = str(i)
-        # print("{} {}, {}, {}, {}".format(fName, lName, city, state, country))
+        print("{} {}, {}, {}, {}".format(fName, lName, city, state, country))
         cur.execute("USP_InsertInventors ?,?,?,?,?,?,?,?", [patentID, lName, mName, fName, city, state, country, rank])
         cur.commit()
 
@@ -71,7 +71,7 @@ conn = DBConnection()
 conn.autocommit = True
 cur = conn.getCursor()
 count = 0
-startfrom = 1
+startfrom = 426
 
 for root, dirs, files in os.walk("C:/Users/zhuhy/Desktop/Patent2017"):
     # for root, dirs, files in os.walk("C:/Users/Hongyi/Desktop/Patent2017"):

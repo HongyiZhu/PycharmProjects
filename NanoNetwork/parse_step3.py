@@ -50,7 +50,7 @@ def build(col, nodelist, dict_country, dict_domain):
                     t = 0
                 else:
                     # if entity_country_dict[node1] == entity_country_dict[node2]:
-                    if entity_country_dict[node1] == 'CN' and entity_country_dict[node2] == 'CN':
+                    if entity_country_dict[node1] == 'US' and entity_country_dict[node2] == 'US':
                         if not entity_domain_dict[node1] == entity_domain_dict[node2]:
                             t = 2
                         elif entity_domain_dict[node1] == "ACA":
@@ -70,7 +70,7 @@ def build(col, nodelist, dict_country, dict_domain):
 
 
 def write_to_gdf(nodelist, net):
-    f = open("SIPO_C2.gdf", "w", encoding="utf8")
+    f = open("USPTO_C2.gdf", "w", encoding="utf8")
     f.write("nodedef>name VARCHAR,label VARCHAR\n")
     for i, n in enumerate(nodelist):
         f.write("s" + str(i) + "," + n + "\n")
@@ -82,7 +82,7 @@ def write_to_gdf(nodelist, net):
     f.close()
 
 nl = build_nodelist((col_SIPO, col_USPTO))
-net = build(col_SIPO, nl, entity_country_dict, entity_domain_dict)
+net = build(col_USPTO, nl, entity_country_dict, entity_domain_dict)
 write_to_gdf(nl, net)
 
 

@@ -7,7 +7,7 @@ class DBConnection:
     def __init__(self):
         self.dbConn = pyodbc.connect(r'Driver={SQL Server Native Client 11.0};'
                                 r'Server=AIL-NANO;'
-                                r'Database=patent2017;'
+                                r'Database=NanoUSPTO;'
                                 r'Trusted_Connection=yes')
 
     def getCursor(self):
